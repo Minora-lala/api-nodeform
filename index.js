@@ -1,19 +1,21 @@
-let express = require('express');
-let cors = require('cors');
+// #################################################
+//                  I N D E X
+// #################################################
 
-let app = express();
-
-//let Test = require('./src/models/test');
-//let User = require('./src/models/user');
-
-const packagejson = require('./package.json');
+const express = require("express");
+const app = express();
+// Remplace l'utilisation de body-parser
+app.use(express.json());
+require('./src/modules/router.module')(app);
 let PORT = 3000;
+// Définition des CORS
+app.use((req,res,next) => {
+    res.setHeader('Acces-Control-Allow-Origin','*')
+    res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content, Accept, Content-Type, Authorization');
+    res.setHeader('Acces-Control-Allow-Methods','GET, POST, PUT')
+    next()
+})
 
-
-app.use(cors());
-//require('./src/modules/router.module')(app);
-
-// API HEALTH CHECK
 app.get('/healthcheck', function (req, res) {
     res.status(200).send({ 'success': 'OK', 'apiVersion': packagejson.version });
 });
