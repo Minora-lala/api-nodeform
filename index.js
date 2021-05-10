@@ -4,10 +4,12 @@
 
 const express = require("express");
 const app = express();
-// Remplace l'utilisation de body-parser
-app.use(express.json());
-require('./src/modules/router.module')(app);
 let PORT = 3000;
+app.use(express.json());
+
+const packagejson = require('./package.json');
+require('./src/modules/router.module')(app);
+
 // Définition des CORS
 app.use((req,res,next) => {
     res.setHeader('Acces-Control-Allow-Origin','*')
