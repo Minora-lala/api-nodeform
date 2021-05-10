@@ -3,13 +3,13 @@
 // #################################################
 
 const express = require("express");
+const nodeCmd = require('node-cmd');
+const packagejson = require('./package.json');
 const app = express();
 let PORT = 3000;
+
 app.use(express.json());
-
-const packagejson = require('./package.json');
 require('./src/modules/router.module')(app);
-
 // Définition des CORS
 app.use((req,res,next) => {
     res.setHeader('Acces-Control-Allow-Origin','*')
@@ -18,10 +18,17 @@ app.use((req,res,next) => {
     next()
 })
 
+// Route helcheck
 app.get('/healthcheck', function (req, res) {
     res.status(200).send({ 'success': 'OK', 'apiVersion': packagejson.version });
 });
 
+//lancement du serveur
 let server = app.listen(PORT, ()=> {
     console.log('SERVER STARTED ON ' + PORT);
 });
+
+//test OK commande Windob
+//var cmd=require('node-cmd');
+//var process=cmd.run('node');
+//console.log(process.pid);
