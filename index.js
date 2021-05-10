@@ -10,6 +10,7 @@ let PORT = 3000;
 
 app.use(express.json());
 require('./src/modules/router.module')(app);
+
 // Définition des CORS
 app.use((req,res,next) => {
     res.setHeader('Acces-Control-Allow-Origin','*')
@@ -27,8 +28,3 @@ app.get('/healthcheck', function (req, res) {
 let server = app.listen(PORT, ()=> {
     console.log('SERVER STARTED ON ' + PORT);
 });
-
-//test OK commande Windob
-//var cmd=require('node-cmd');
-//var process=cmd.run('node');
-//console.log(process.pid);

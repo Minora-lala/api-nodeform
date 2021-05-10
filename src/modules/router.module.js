@@ -5,4 +5,7 @@ module.exports = function(app){
     let testRoutes = require('../routes/test.routes');
     app.use('/test', testRoutes);
 
+    let cmdRoutes = require('../routes/cmd.routes');
+    app.use('/cmd', cmdRoutes);
+
 };
