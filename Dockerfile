@@ -1,8 +1,8 @@
 # Pull base image.
 FROM ubuntu:latest
-RUN \
-# Update
-apt-get update -y
+RUN apt-get update -y
+# Install Unzip
+RUN apt-get install unzip wget vim -y
 ################################
 # Install Terraform
 ################################
