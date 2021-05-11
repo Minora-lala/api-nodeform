@@ -1,36 +1,19 @@
-# Pull base image.
-FROM ubuntu:latest
-RUN apt-get update -y
-# Install Unzip
-RUN apt-get install unzip wget vim -y
-################################
-# Install Terraform
-################################
-# Download terraform for linux
-RUN wget https://releases.hashicorp.com/terraform/0.11.11/terraform_0.11.11_linux_amd64.zip
-# Unzip
-RUN unzip terraform_0.11.11_linux_amd64.zip
-# Move to local bin
-RUN mv terraform /usr/local/bin/
-# Check that it's installed
-RUN terraform --version 
-################################
-# Install python
-################################
-RUN apt-get install -y python3-pip
-#RUN ln -s /usr/bin/python3 python
-RUN pip3 install --upgrade pip
-RUN python3 -V
-RUN pip --version
-################################
-# Install AWS CLI
-################################
-RUN pip install awscli --upgrade --user
-# add aws cli location to path
-ENV PATH=~/.local/bin:$PATH
-# Adds local templates directory and contents in /usr/local/terrafrom-templates
-ADD templates /usr/local/bin/templates
-RUN mkdir ~/.aws && touch ~/.aws/credentials
+FROM golang:alpine
+
+ENV TERRAFORM_VERSION=0.15.3
+
+RUN apk add --update git bash openssh
+
+ENV TF_DEV=true
+ENV TF_RELEASE=true
+
+WORKDIR $GOPATH/src/github.com/hashicorp/terraform
+RUN git clone https://github.com/hashicorp/terraform.git ./ && \
+    git checkout v${TERRAFORM_VERSION} && \
+    /bin/bash scripts/build.sh
+
+WORKDIR $GOPATH
+ENTRYPOINT ["terraform"]
 ################################
 # Install NodeJs 
 ################################
